@@ -1,0 +1,12 @@
+# dependencies
+/node_modules
+
+# production
+/build
+/lib
+/dist
+
+# misc
+.env.local
+
+.env
