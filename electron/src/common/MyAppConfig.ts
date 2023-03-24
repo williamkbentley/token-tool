@@ -2,7 +2,7 @@
 
 import { iTwinChannel } from "@itwin/core-common";
 
-export const channelName = iTwinChannel("desktop-viewer");
+export const channelName = iTwinChannel("my-app");
 
 export interface MyAppIpc {
   getConfig: () => Promise<ViewerConfig>;

@@ -1,23 +1,23 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
+import { ElectronRendererAuthorization } from "@itwin/electron-authorization/lib/cjs/ElectronRenderer";
+import { ElectronApp } from "@itwin/core-electron/lib/cjs/ElectronFrontend";
 import { Home } from "./Home";
 import { MyApp } from "../app/MyApp";
-import { useDesktopViewerInitializer } from "@itwin/desktop-viewer-react";
 
 const App = () => {
-
-  // Here, I am using the initializer from the desktop viewer
-  // It does a bunch of stuff
-  // https://github.com/iTwin/viewer/blob/master/packages/modules/desktop-viewer-react/src/hooks/useDesktopViewerInitializer.tsx
-  const initialized = useDesktopViewerInitializer({
-    enablePerformanceMonitors: true,
-  });
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    if (initialized) {
+    const doInit = async () => {
+      const authClient = new ElectronRendererAuthorization();
+      await ElectronApp.startup({
+        iModelApp: { authorizationClient: authClient },
+      });
       // Initialize my auth client on the backend
       void MyApp.ipcCall.initAuth();
-    }
+    };
+
+    doInit().then(() => setInitialized(true));
   }, [initialized]);
 
   return initialized ? (
